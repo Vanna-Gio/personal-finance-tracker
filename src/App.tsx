@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ExpenseList from "./components/ExpenseList";
 
 //Same type as above 
@@ -11,16 +11,30 @@ type Expense ={
 
 function App() {
   //Dummy data with proper types
-  const [expenses, setExpenses] =  useState<Expense[]>([
-    { id: 1, description: 'Lunch', amount: 8.5, category: 'Food'},
-    {id: 2, description: 'Bus fare', amount: 1.5, category: 'Transport'},
-    {id: 3, description: 'Coffee', amount: 3, category: 'Food'},
-
-  ]);
+  const [expenses, setExpenses] =  useState<Expense[]>([]);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Food');
 
+  //Load from localStorage when app starts
+  useEffect(() => {
+    const saved = localStorage.getItem('expenses');
+    if(saved) {
+      try {
+        setExpenses(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to load expenses:', e);
+      }
+    }
+  }, []); // empty array = run once on mount
+
+  //save to localStorage whenever expenses change 
+  useEffect(() =>{
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+
+  }, [expenses]); // run when expenses updates
+
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description.trim() || !amount || Number(amount) <= 0){
@@ -41,6 +55,11 @@ function App() {
     setAmount('');
     setCategory('Food');
     
+  };
+  const handleClearAll = () => {
+    if(window.confirm('Are you sure you want to delete all expenses?')) {
+      setExpenses([]);
+    }
   };
 
   return (
@@ -86,7 +105,11 @@ function App() {
 
         <button type="submit" >Add Expense</button>
 
+
       </form>
+      
+     <button onClick={handleClearAll} className="clear-button">Clear All Expenses</button>
+      
       <h2>Recent Expenses</h2>
       <ExpenseList expenses={expenses} />
     </div>
