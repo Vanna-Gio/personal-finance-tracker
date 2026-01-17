@@ -62,6 +62,14 @@ function App() {
     }
   };
 
+  // New: Calculate total spent
+  const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+
+  // New: Group by category
+  const categorySummary = expenses.reduce((acc: Record<string, number>, exp) =>{
+    acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+    return acc;
+  }, {});
   return (
     <div className="app-container">
       <h1>Personal Finance Tracker</h1>
@@ -112,6 +120,19 @@ function App() {
       
       <h2>Recent Expenses</h2>
       <ExpenseList expenses={expenses} />
+
+      {Object.keys(categorySummary).length > 0 && (
+        <div style={{ marginTop: '32px'}}>
+          <h3>By Category</h3>
+          <ul style={{ listStyle: 'none', padding: 0}}>
+            {Object.entries(categorySummary).map(([cat, total]) => (
+              <li key={cat} style={{ padding: '8px 0', borderBottom: '1px solid #eee'}}>
+                {cat}: ${total.toFixed(2)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }
