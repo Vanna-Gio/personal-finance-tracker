@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
+import CategoryChart from "./components/CategoryChart";
+
 //Same type as above 
 type Expense ={
   id: number;
@@ -12,13 +14,7 @@ type Expense ={
 function App() {
   //Dummy data with proper types
   const [expenses, setExpenses] =  useState<Expense[]>([]);
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('Food');
-  //
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-
+ 
   //Load from localStorage when app starts
   useEffect(() => {
     const saved = localStorage.getItem('expenses');
@@ -101,13 +97,7 @@ function App() {
       {Object.keys(categorySummary).length > 0 && (
         <div style={{ marginTop: '32px'}}>
           <h3>By Category</h3>
-          <ul style={{ listStyle: 'none', padding: 0}}>
-            {Object.entries(categorySummary).map(([cat, total]) => (
-              <li key={cat} style={{ padding: '8px 0', borderBottom: '1px solid #eee'}}>
-                {cat}: ${total.toFixed(2)}
-              </li>
-            ))}
-          </ul>
+              <CategoryChart categorySummary={categorySummary} />
         </div>
       )}
     </div>
