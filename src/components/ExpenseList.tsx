@@ -18,7 +18,7 @@ function ExpenseList({ expenses, onDelete }: ExpenseListProps) {
     return (
         <ul >
             {expenses.map((expense) =>(
-                <li 
+                <li className="expense-item"
                     key={expense.id} 
                     >
                         <span>{expense.description} ({expense.category})</span>

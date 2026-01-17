@@ -113,3 +113,20 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
     background: rgba(46, 125, 50, 0.1);
     border-radius: 4px;
 }
+
+//Add animation
+.expense-item {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+}
