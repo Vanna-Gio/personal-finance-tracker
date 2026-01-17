@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ExpenseList from "./components/ExpenseList";
-
+import ExpenseForm from "./components/ExpenseForm";
 //Same type as above 
 type Expense ={
   id: number;
@@ -32,6 +32,7 @@ function App() {
   }, []); // empty array = run once on mount
 //
   const descriptionRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if(descriptionRef.current) {
       descriptionRef.current.focus();
@@ -45,46 +46,6 @@ function App() {
   }, [expenses]); // run when expenses updates
 
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Better validation
-
-    if (!description.trim()) {
-      alert('Description is required.');
-      return
-    }
-    if(!amount || Number(amount) <= 0) {
-      alert('Please enter a positive amount.');
-      return
-    }
-    if (description.length < 3) {
-      alert('Description should be at least 3 characters.');
-      return
-    }
-    setIsSubmitting(true);
-
-    const newExpense: Expense = {
-      id: Date.now(), // Simple unique id
-      description,
-      amount: Number(amount),
-      category,
-    };
-
-    setExpenses([...expenses, newExpense]);
-
-    // Success feadback
-    setSuccessMessage(`Added: ${description.trim()} - $${Number(amount).toFixed(2)}`);
-    setTimeout(() => setSuccessMessage(''), 3000);// disappear after 3s
-
-
-    // Clear form
-    setDescription('');
-    setAmount('');
-    setCategory('Food');
-
-    setIsSubmitting(false);
-    
-  };
   const handleClearAll = () => {
     if(window.confirm('Are you sure you want to delete all expenses?')) {
       setExpenses([]);
@@ -109,58 +70,28 @@ function App() {
     <div className="app-container">
       <h1>Personal Finance Tracker</h1>
 
-      <form onSubmit={handleSubmit} >
-        {successMessage && (
-          <p className="success-message">
-            {successMessage}
-          </p>
-        )}
-        <div>
-          <label>Description: </label>
-          <input 
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="e.g. Dinner"
-           
-            />
-        </div>
+      <div style={{ 
+          marginBottom: '24px', 
+          padding: '16px',
+          background: '#e3f2fd',
+          borderRadius: '8px'
+      }}>
+        <h2 style={{ margin: '0 0 8px 0'}}>Summary</h2>
+        <p style={{ fontSize: '20px', fontWeight: 'bold', margin: '0'}}>
+          Total Spent: ${totalSpent.toFixed(2)}
+        </p>
+      </div>
 
-        <div>
-          <label>Amount ($): </label>
-          <input 
-            type="number"
-            step="0.01"
-            value= {amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="0.00"
-            
-            />
-        </div>
-        <div >
-          <label>Category: </label>
-          <select 
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-           
-            >
-              <option value={"Food"}>Food</option>
-              <option value={"Transport"}>Transport</option>
-              <option value={"Entertainment"}>Entertainment</option>
-              <option value={"Other"}>Other</option>
-            </select>
-        </div>
-
-        <button 
-          type="submit"
-          disabled={isSubmitting}
-          style={{ opacity: isSubmitting ? 0.7 : 1}}
-          >
-            {isSubmitting ? 'Adding...' : 'Add Expense'}
-          </button>
-
-
-      </form>
+      <ExpenseForm
+        onAddExpense={(newExp) => {
+          const expenseToAdd = {
+            id: Date.now(),
+            ...newExp,
+          };
+          setExpenses([...expenses, expenseToAdd]);
+        }}
+        />
+      
       
      <button onClick={handleClearAll} className="clear-button">Clear All Expenses</button>
       
