@@ -7,21 +7,46 @@ $success-color: #2e7d32;
 $danger-color: #d32f2f;
 $spacing: 12px;
 $container-width: 600px;
-
+:root {
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --border-color: #eee;
+    --primary: #1976d2;
+    --success: #2e7d32;
+    --danger: #d32f2f;
+    --light-text: #777;
+}
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-bg: #1e1e1e;
+  --border-color: #333;
+  --primary: #90caf9;
+  --success: #81c784;
+  --danger: #ef5350;
+  --light-text: #aaa;
+}
 body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: $light-bg;
-    color: $text-color;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 .app-container{
     max-width: $container-width;
     margin: 40px auto;
     padding: 20px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-h1,h2 {
-    color: $text-color;
+h1,h2 ,h3{
+    color: var(--text-color)
+}
+form div{
+    margin-bottom: 16px;
 }
 
 form {
@@ -112,6 +137,19 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
     padding: 8px;
     background: rgba(46, 125, 50, 0.1);
     border-radius: 4px;
+}
+
+//
+.toggleTheme {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 //Add animation

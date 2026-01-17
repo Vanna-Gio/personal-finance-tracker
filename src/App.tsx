@@ -1,4 +1,5 @@
 import  { useEffect, useRef, useState } from "react";
+
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import CategoryChart from "./components/CategoryChart";
@@ -30,7 +31,9 @@ function App() {
   const descriptionRef = useRef<HTMLInputElement>(null);
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest' | 'lowest' > ('newest');
   const [filterCategory, setFilterCategory] = useState<string>('All');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
+  //
   let displayedExpenses = [...expenses];
 
   // Filter
@@ -90,8 +93,24 @@ function App() {
     acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
     return acc;
   }, {});
-  return (
+
+  //
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  }
+  
+return (
+  <>
+    <button className="toggleTheme"
+      onClick={toggleTheme}
+    >
+      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+    </button>
+
     <div className="app-container">
+       
       <h1>Personal Finance Tracker</h1>
 
       <div style={{ 
@@ -163,7 +182,8 @@ function App() {
               <CategoryChart categorySummary={filteredCategorySummary} />
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 
