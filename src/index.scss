@@ -104,3 +104,12 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
     }
 
 }
+
+.success-message {
+    color: $success-color;
+    margin-bottom: 16px;
+    font-weight: 500;
+    padding: 8px;
+    background: rgba(46, 125, 50, 0.1);
+    border-radius: 4px;
+}

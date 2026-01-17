@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ExpenseList from "./components/ExpenseList";
 
 //Same type as above 
@@ -15,6 +15,9 @@ function App() {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Food');
+  //
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   //Load from localStorage when app starts
   useEffect(() => {
@@ -27,6 +30,13 @@ function App() {
       }
     }
   }, []); // empty array = run once on mount
+//
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if(descriptionRef.current) {
+      descriptionRef.current.focus();
+    }
+  }, []); // Focus on first load
 
   //save to localStorage whenever expenses change 
   useEffect(() =>{
@@ -37,10 +47,22 @@ function App() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!description.trim() || !amount || Number(amount) <= 0){
-      alert('Please fill description and a positive amount.');
-      return;
+    // Better validation
+
+    if (!description.trim()) {
+      alert('Description is required.');
+      return
     }
+    if(!amount || Number(amount) <= 0) {
+      alert('Please enter a positive amount.');
+      return
+    }
+    if (description.length < 3) {
+      alert('Description should be at least 3 characters.');
+      return
+    }
+    setIsSubmitting(true);
+
     const newExpense: Expense = {
       id: Date.now(), // Simple unique id
       description,
@@ -50,10 +72,17 @@ function App() {
 
     setExpenses([...expenses, newExpense]);
 
+    // Success feadback
+    setSuccessMessage(`Added: ${description.trim()} - $${Number(amount).toFixed(2)}`);
+    setTimeout(() => setSuccessMessage(''), 3000);// disappear after 3s
+
+
     // Clear form
     setDescription('');
     setAmount('');
     setCategory('Food');
+
+    setIsSubmitting(false);
     
   };
   const handleClearAll = () => {
@@ -81,6 +110,11 @@ function App() {
       <h1>Personal Finance Tracker</h1>
 
       <form onSubmit={handleSubmit} >
+        {successMessage && (
+          <p className="success-message">
+            {successMessage}
+          </p>
+        )}
         <div>
           <label>Description: </label>
           <input 
@@ -117,7 +151,13 @@ function App() {
             </select>
         </div>
 
-        <button type="submit" >Add Expense</button>
+        <button 
+          type="submit"
+          disabled={isSubmitting}
+          style={{ opacity: isSubmitting ? 0.7 : 1}}
+          >
+            {isSubmitting ? 'Adding...' : 'Add Expense'}
+          </button>
 
 
       </form>
