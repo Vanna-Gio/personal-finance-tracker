@@ -44,32 +44,22 @@ function App() {
   };
 
   return (
-    <div style={{
-      fontFamily: 'Arial, sans-serif' , 
-      maxWidth: '600px',
-      margin: '40px auto',
-      padding: '20px' 
-    }}>
+    <div className="app-container">
       <h1>Personal Finance Tracker</h1>
 
-      <form onSubmit={handleSubmit} style={{
-        marginBottom: '32px', color: '#fff'
-      }}>
-        <div style={{
-          marginBottom: '12px',
-         
-        }}>
+      <form onSubmit={handleSubmit} >
+        <div>
           <label>Description: </label>
           <input 
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g. Dinner"
-            style={{ padding: '8px', width: '200px'}}
+           
             />
         </div>
 
-        <div style={{ marginBottom: '12px'}}>
+        <div>
           <label>Amount ($): </label>
           <input 
             type="number"
@@ -77,34 +67,28 @@ function App() {
             value= {amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.00"
-            style={{ padding: '8px', width: '120px'}}
+            
             />
         </div>
-        <div style={{ marginBottom: '12px'}}>
+        <div >
           <label>Category: </label>
           <select 
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            style={{ padding: '8px'}}
+           
             >
-              <option value="Food">Food</option>
-              <option value="Transport">Transport</option>
+              <option value={"Food"}>Food</option>
+              <option value={"Transport"}>Transport</option>
               <option value={"Entertainment"}>Entertainment</option>
               <option value={"Other"}>Other</option>
             </select>
         </div>
 
-        <button type="submit"
-                 style={{ 
-                    padding: '10px 20px', 
-                    background:'#1976d2',
-                    color: 'white',
-                    border: 'none', borderRadius: '4px'
-                  }}>Add Expense</button>
+        <button type="submit" >Add Expense</button>
 
       </form>
       <h2>Recent Expenses</h2>
-      <ExpenseList expense={expenses} />
+      <ExpenseList expenses={expenses} />
     </div>
   )
 }

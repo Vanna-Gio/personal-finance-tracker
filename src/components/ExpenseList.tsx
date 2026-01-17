@@ -10,30 +10,23 @@ type Expense = {
 
 //we pass the list of expenses as a prop
 interface ExpenseListProps {
-    expense: Expense[];
+    expenses: Expense[];
 }
 
-function ExpenseList({ expense }: ExpenseListProps) {
+function ExpenseList({ expenses }: ExpenseListProps) {
     return (
-        <ul style={{ listStyle: 'none', padding: 0}}>
-            {expense.map((expense) =>(
+        <ul >
+            {expenses.map((expense) =>(
                 <li 
                     key={expense.id} 
-                    style={{ 
-                        padding: '12px',
-                        borderBottom: '1px solid #eee',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                        
-                        }}
                     >
                         <span>{expense.description} ({expense.category})</span>
-                        <span style={{ color: expense.amount> 0 ? '#2e7d32': '#d32f2f' }}>
+                        <span className= {expense.amount > 0 ? 'positive': 'negative'}>
                             ${expense.amount.toFixed(2)}
                       </span>                          
                 </li>
             ))}
-            {expense.length === 0 && <li style={{ color: '#ffff', padding: '12px'}}> No expense yet.</li>}
+            {expenses.length === 0 && <li className="no-expenses"> No expense yet.</li>}
         </ul>
     );
 }
