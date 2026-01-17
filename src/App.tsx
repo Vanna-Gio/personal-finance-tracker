@@ -28,7 +28,23 @@ function App() {
   }, []); // empty array = run once on mount
 //
   const descriptionRef = useRef<HTMLInputElement>(null);
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest' | 'lowest' > ('newest');
+  const [filterCategory, setFilterCategory] = useState<string>('All');
 
+  let displayedExpenses = [...expenses];
+
+  // Filter
+  if(filterCategory !== 'All') {
+    displayedExpenses = displayedExpenses.filter(exp => exp.category === filterCategory);
+  }
+  // Sort
+  displayedExpenses.sort((a, b) => {
+    if (sortBy === 'newest') return b.id - a.id;
+    if(sortBy === 'oldest') return a.id - b.id;
+    if(sortBy === 'highest') return b.amount - a.amount;
+    if(sortBy === 'lowest') return a.amount - b.amount;
+    return 0;
+  });
   useEffect(() => {
     if(descriptionRef.current) {
       descriptionRef.current.focus();
@@ -69,6 +85,11 @@ function App() {
     );
   };
 
+  //
+  const filteredCategorySummary = displayedExpenses.reduce((acc: Record<string, number>, exp) => {
+    acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+    return acc;
+  }, {});
   return (
     <div className="app-container">
       <h1>Personal Finance Tracker</h1>
@@ -99,14 +120,47 @@ function App() {
      <button onClick={handleClearAll} className="clear-button">Clear All Expenses</button>
       
       <h2>Recent Expenses</h2>
-      <ExpenseList expenses={expenses} 
+        <div style={{ 
+                margin: '24px 0', display: 'flex', gap: '16px', flexWrap: 'wrap'
+
+      }}
+      >
+        <div>
+          <label>Sort by: </label>
+          <select 
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            style={{ padding: '8px'}}
+            >
+              <option value={"newest"} >Newest</option>
+              <option value="oldest">Oldest first</option>
+              <option value="highest">Highest amount</option>
+              <option value="lowest">Lowest amount</option>
+            </select>
+        </div>
+        <div>
+          <label>Filter category: </label>
+          <select 
+            value={filterCategory} 
+            onChange={(e) => setFilterCategory(e.target.value)}
+            style={{ padding: '8px' }}
+          >
+            <option value="All">All</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <ExpenseList expenses={displayedExpenses} 
                     onDelete={handleDelete}
                     onEdit={handleEdit} />
 
       {Object.keys(categorySummary).length > 0 && (
         <div style={{ marginTop: '32px'}}>
           <h3>By Category</h3>
-              <CategoryChart categorySummary={categorySummary} />
+              <CategoryChart categorySummary={filteredCategorySummary} />
         </div>
       )}
     </div>
