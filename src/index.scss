@@ -95,3 +95,12 @@ li {
         background: darken($danger-color, 10%);
     }
 }
+
+button[aria-label="delete"] { // or just target the button if you add aria-label later
+    &:hover {
+        color: darken($danger-color, 20%);
+        background: rgba(211, 47, 47, 0.1);
+        border-radius: 4px;
+    }
+
+}

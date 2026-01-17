@@ -70,6 +70,12 @@ function App() {
     acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
     return acc;
   }, {});
+
+  const handleDelete = (id: number) => {
+    if(window.confirm('Delete this expense?')) {
+      setExpenses(expenses.filter((exp) => exp.id !== id));
+    }
+  }
   return (
     <div className="app-container">
       <h1>Personal Finance Tracker</h1>
@@ -119,7 +125,7 @@ function App() {
      <button onClick={handleClearAll} className="clear-button">Clear All Expenses</button>
       
       <h2>Recent Expenses</h2>
-      <ExpenseList expenses={expenses} />
+      <ExpenseList expenses={expenses} onDelete={handleDelete} />
 
       {Object.keys(categorySummary).length > 0 && (
         <div style={{ marginTop: '32px'}}>
