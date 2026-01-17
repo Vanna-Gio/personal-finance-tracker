@@ -33,3 +33,7 @@ Runs on http://localhost:3000
 - localStorage for persistence
 
 For handover: Code is modular (separate components). Easy to extend with backend API later.
+
+## 📸 UI Preview 
+![Expense Form Screenshot](./assets/expense-form.png)
+![Expense Form Screenshot](./assets/Recent_expenses.png)
