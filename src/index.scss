@@ -34,6 +34,7 @@ body {
     color: var(--text-color);
 }
 .app-container{
+    position: relative;
     max-width: $container-width;
     margin: 40px auto;
     padding: 20px;
@@ -140,7 +141,7 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
 }
 
 //
-.toggleTheme {
+.toggle {
     position: absolute;
     top: 20px;
     right: 20px;

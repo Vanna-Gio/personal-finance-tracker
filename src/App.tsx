@@ -103,13 +103,14 @@ function App() {
   
 return (
   <>
-    <button className="toggleTheme"
+    
+
+    <div className="app-container">
+      <button className="toggle"
       onClick={toggleTheme}
     >
       {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
     </button>
-
-    <div className="app-container">
        
       <h1>Personal Finance Tracker</h1>
 
