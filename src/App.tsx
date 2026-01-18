@@ -77,15 +77,34 @@ function App() {
   }, {});
 
   const handleDelete = (id: number) => {
+    const expenseToDelete = expenses.find(exp => exp.id === id);
+    if (!expenseToDelete) return;
     if(window.confirm('Delete this expense?')) {
-      setExpenses(expenses.filter((exp) => exp.id !== id));
+      setLastAction({
+        type: 'delete',
+        expense: expenseToDelete,
+      });
+      setExpenses(prev => prev.filter(exp => exp.id !== id));
+      setShowUndoToast(true);
+      setTimeout(() => setShowUndoToast(false), 5000);
     }
   }
 
   const handleEdit = (updatedExpense: Expense) => {
+    const oldExpense = expenses.find(exp => exp.id === updatedExpense.id);
+    if (!oldExpense) return;
+    setLastAction({
+      type: 'edit',
+      expense: oldExpense, //save old version
+    });
+
     setExpenses(
-      expenses.map((exp) => exp.id === updatedExpense.id ? updatedExpense : exp)
+
+      expenses.map((exp) => 
+        exp.id === updatedExpense.id ? updatedExpense : exp)
     );
+    setShowUndoToast(true);
+    setTimeout(() => setShowUndoToast(false), 5000);
   };
 
   //
@@ -93,6 +112,23 @@ function App() {
     acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
     return acc;
   }, {});
+  //
+  const handleUndo = () => {
+    if (!lastAction) return;
+
+    if (lastAction.type === 'delete'){
+      setExpenses(prev => [...prev, lastAction.expense]);
+
+    }else if (lastAction.type === 'edit'){
+      setExpenses(prev => 
+        prev.map(exp =>
+          exp.id === lastAction.expense.id ? lastAction.expense : exp
+        )
+      );
+    }
+    setLastAction(null);
+    setShowUndoToast(false);
+  }
 
   //
   const toggleTheme = () => {
@@ -100,6 +136,13 @@ function App() {
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
   }
+  //
+  const [lastAction, setLastAction] = useState<{
+    type: 'delete' | 'edit' ;
+    expense: Expense;
+    previousExpenses?: Expense[]; // for edit, we need old list 
+  } | null>(null);
+  const [showUndoToast, setShowUndoToast] = useState(false);
   
 return (
   <>
@@ -184,6 +227,21 @@ return (
         </div>
       )}
       </div>
+
+      {showUndoToast && lastAction && (
+          <div className="undo-toast">
+            <span> {lastAction.type === 'delete' ? 'Expense deleted.' : 'Expense updated.'} </span>
+            <button
+              onClick={handleUndo}
+              className="undo-btn"
+              > Undo</button>
+              <button 
+                onClick={() => setShowUndoToast(false)}
+                className="close"
+                >×</button>
+
+          </div>
+      )}
     </>
   )
 }

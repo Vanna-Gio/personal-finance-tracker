@@ -152,6 +152,38 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
     border-radius: 4px;
     cursor: pointer;
 }
+//Undo 
+.undo-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 1000;
+
+}
+.undo-toast button.undo-btn{
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.undo-toast button.close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
 
 //Add animation
 .expense-item {
