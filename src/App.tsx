@@ -2,7 +2,7 @@ import  { useEffect, useRef, useState } from "react";
 
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
-import CategoryChart from "./components/CategoryChart";
+import Summary from "./components/Summary";
 
 //Same type as above 
 type Expense ={
@@ -157,18 +157,12 @@ return (
        
       <h1>Personal Finance Tracker</h1>
 
-      <div style={{ 
-          marginBottom: '24px', 
-          padding: '16px',
-          background: '#e3f2fd',
-          borderRadius: '8px'
-      }}>
-        <h2 style={{ margin: '0 0 8px 0'}}>Summary</h2>
-        <p style={{ fontSize: '20px', fontWeight: 'bold', margin: '0'}}>
-          Total Spent: ${totalSpent.toFixed(2)}
-        </p>
-      </div>
+      <Summary 
+        totalSpent={totalSpent}
+        categorySummary={filteredCategorySummary || categorySummary}
+        />
 
+  
       <ExpenseForm
         onAddExpense={(newExp) => {
           const expenseToAdd = {
@@ -178,10 +172,10 @@ return (
           setExpenses([...expenses, expenseToAdd]);
         }}
         />
-      
-      
+    
      <button onClick={handleClearAll} className="clear-button">Clear All Expenses</button>
       
+      {/*  */}
       <h2>Recent Expenses</h2>
         <div style={{ 
                 margin: '24px 0', display: 'flex', gap: '16px', flexWrap: 'wrap'
@@ -220,12 +214,7 @@ return (
                     onDelete={handleDelete}
                     onEdit={handleEdit} />
 
-      {Object.keys(categorySummary).length > 0 && (
-        <div style={{ marginTop: '32px'}}>
-          <h3>By Category</h3>
-              <CategoryChart categorySummary={filteredCategorySummary} />
-        </div>
-      )}
+      
       </div>
 
       {showUndoToast && lastAction && (

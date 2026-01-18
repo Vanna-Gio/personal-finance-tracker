@@ -16,6 +16,7 @@ $container-width: 600px;
     --success: #2e7d32;
     --danger: #d32f2f;
     --light-text: #777;
+    --summary: #e3f2fd;
 }
 [data-theme="dark"] {
   --bg-color: #121212;
@@ -26,6 +27,7 @@ $container-width: 600px;
   --success: #81c784;
   --danger: #ef5350;
   --light-text: #aaa;
+  --summary: var(--bg-color);
 }
 body {
     margin: 0;
@@ -184,7 +186,16 @@ button[aria-label="delete"] { // or just target the button if you add aria-label
     cursor: pointer;
     font-size: 18px;
 }
+//summary
+.summary {
+    margin: 32px;
+    padding: 16px;
+    border-radius: 8px ;
+    background: var(--summary);
+}
 
+                
+       
 //Add animation
 .expense-item {
     animation: fadeIn 0.5s ease-in-out;

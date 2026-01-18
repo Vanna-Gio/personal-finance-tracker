@@ -36,4 +36,5 @@ For handover: Code is modular (separate components). Easy to extend with backend
 
 ## 📸 UI Preview 
 ![Expense Form Screenshot](./assets/expense-form.png)
-![Expense Form Screenshot](./assets/Recent_expenses.png)
+![Expense Form Screenshot](./assets/sort_filter_edit_delete.png)
+![Expense Form Screenshot](./assets/undo.png)

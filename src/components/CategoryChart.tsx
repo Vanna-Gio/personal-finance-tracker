@@ -62,7 +62,7 @@ function CategoryChart({ categorySummary }: CategoryChartProps) {
         },
     };
     return (
-        <div style={{ marginTop: '32px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto'}}>
+        <div style={{ marginTop: '30px', maxWidth: '200px', marginLeft: 'auto', marginRight: 'auto'}}>
             <h3 > Spending by Category</h3>
             <Pie data={data} options={options} />
         </div>
